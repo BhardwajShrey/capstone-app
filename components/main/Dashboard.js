@@ -8,8 +8,8 @@ const Stack = createStackNavigator();
 
 export default function Dashboard() {
     return (
-        <Stack.Navigator initialRouteName = "Feed">
-            <Stack.Screen name = "Feed" component = {Feed} options = {{headerStyle: {backgroundColor: "#3f7cac"}, headerTintColor: "#fff"}} />
+        <Stack.Navigator initialRouteName = "Feed" screenOptions = {{headerStyle: {backgroundColor: "#3f7cac"}, headerTintColor: "#fff"}}>
+            <Stack.Screen name = "Feed" component = {Feed} />
         </Stack.Navigator>
     )
 }

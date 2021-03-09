@@ -8,8 +8,8 @@ const Stack = createStackNavigator();
 export default function Account()
 {
     return(
-        <Stack.Navigator initialRouteName = "UserDetails">
-            <Stack.Screen name = "UserDetails" component = {UserDetails} options = {{title: "User Details" ,headerStyle: {backgroundColor: "#3f7cac"}, headerTintColor: "#fff"}} />
+        <Stack.Navigator initialRouteName = "UserDetails" screenOptions = {{headerStyle: {backgroundColor: "#3f7cac"}, headerTintColor: "#fff"}}>
+            <Stack.Screen name = "UserDetails" component = {UserDetails} options = {{title: "User Details"}} />
         </Stack.Navigator>
     );
 }

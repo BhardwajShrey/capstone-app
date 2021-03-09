@@ -29,7 +29,7 @@ class Main extends Component
                         {
                             tabBarIcon: ({color, size}) =>
                             (
-                                <MaterialIcons name = "home" color = {color} size = {25} />
+                                <MaterialIcons name = "home" color = {color} size = {26} />
                             )
                         }
                     }
@@ -42,7 +42,7 @@ class Main extends Component
                         {
                             tabBarIcon: ({color, size}) =>
                             (
-                                <MaterialIcons name = "account-circle" color = {color} size = {25} />
+                                <MaterialIcons name = "account-circle" color = {color} size = {26} />
                             )
                         }
                     }
