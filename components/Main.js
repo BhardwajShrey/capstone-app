@@ -6,8 +6,8 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {fetchUser} from "../redux/actions/Index";
 
-import Dashboard from "./main/Dashboard";
-import Account from "./main/Account";
+import Dashboard from "../routes/Dashboard";
+import Account from "../routes/Account";
 
 const Tab = createBottomTabNavigator();
 

@@ -1,8 +1,8 @@
 import React from 'react';
 import {createStackNavigator} from "@react-navigation/stack";
 
-import Feed from "../../screens/Feed";
-import AddComplaint from "../../screens/AddComplaint";
+import Feed from "../screens/Feed";
+import AddComplaint from "../screens/AddComplaint";
 
 const Stack = createStackNavigator();
 

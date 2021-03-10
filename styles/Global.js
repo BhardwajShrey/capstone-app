@@ -3,12 +3,11 @@ import {StyleSheet} from "react-native";
 export const globalStyles = StyleSheet.create(
     {
         container: {
-            paddingVertical: 30,
+            paddingTop: 30,
             paddingHorizontal: 16,
             flex: 1
         },
         titleText: {
-            fontFamily: "roboto-bold",
             fontSize: 18,
             color: "#333"
         },
