@@ -18,64 +18,64 @@ const complaintSchema = yup.object(
 export default function ComplaintForm({navigation})
 {
     return(
-        <View style = {globalStyles.container}>
-            <TouchableWithoutFeedback onPress = {Keyboard.dismiss}>
-                <Formik
-                    initialValues = {{Title: "", Complaint: "", Location: ""}}
-                    validationSchema = {complaintSchema}
-                    onSubmit = {
-                        (values, actions) =>
-                        {
-                            actions.resetForm();
-                            addComplaint(values);
+        <TouchableWithoutFeedback onPress = {Keyboard.dismiss}>
+            <View style = {globalStyles.container}>
+                    <Formik
+                        initialValues = {{Title: "", Complaint: "", Location: ""}}
+                        validationSchema = {complaintSchema}
+                        onSubmit = {
+                            (values, actions) =>
+                            {
+                                actions.resetForm();
+                                addComplaint(values);
+                            }
                         }
-                    }
-                >
-                    {
-                        (props) =>
-                        (
-                            <View>
-                                <TextInput
-                                    style = {globalStyles.input}
-                                    placeholder = "Title of your complaint"
-                                    onChangeText = {props.handleChange("Title")}
-                                    value = {props.values.Title}
-                                    onBlur = {props.handleBlur("Title")}
-                                />
-                                <Text style = {globalStyles.errorText}>{props.touched.Title && props.errors.Title}</Text>
+                    >
+                        {
+                            (props) =>
+                            (
+                                <View>
+                                    <TextInput
+                                        style = {globalStyles.input}
+                                        placeholder = "Title of your complaint"
+                                        onChangeText = {props.handleChange("Title")}
+                                        value = {props.values.Title}
+                                        onBlur = {props.handleBlur("Title")}
+                                    />
+                                    <Text style = {globalStyles.errorText}>{props.touched.Title && props.errors.Title}</Text>
 
-                                <TextInput
-                                    multiline
-                                    minHeight = {120}
-                                    style = {globalStyles.input}
-                                    placeholder = "Complaint in detail..."
-                                    onChangeText = {props.handleChange("Complaint")}
-                                    value = {props.values.Complaint}
-                                    onBlur = {props.handleBlur("Complaint")}
-                                />
-                                <Text style = {globalStyles.errorText}>{props.touched.Complaint && props.errors.Complaint}</Text>
-                                
-                                <TextInput
-                                    style = {globalStyles.input}
-                                    placeholder = "Location"
-                                    onChangeText = {props.handleChange("Location")}
-                                    value = {props.values.Location}
-                                    onBlur = {props.handleBlur("Location")}
-                                />
-                                <Text style = {globalStyles.errorText}>{props.touched.Location && props.errors.Location}</Text>
+                                    <TextInput
+                                        multiline
+                                        minHeight = {120}
+                                        style = {globalStyles.input}
+                                        placeholder = "Complaint in detail..."
+                                        onChangeText = {props.handleChange("Complaint")}
+                                        value = {props.values.Complaint}
+                                        onBlur = {props.handleBlur("Complaint")}
+                                    />
+                                    <Text style = {globalStyles.errorText}>{props.touched.Complaint && props.errors.Complaint}</Text>
 
-                                <Button
-                                    title = "Add images (optional)"
-                                    color = "maroon"
-                                    onPress = {() => navigation.navigate("AddImage")}
-                                />
+                                    <TextInput
+                                        style = {globalStyles.input}
+                                        placeholder = "Location"
+                                        onChangeText = {props.handleChange("Location")}
+                                        value = {props.values.Location}
+                                        onBlur = {props.handleBlur("Location")}
+                                    />
+                                    <Text style = {globalStyles.errorText}>{props.touched.Location && props.errors.Location}</Text>
 
-                                <FlatButton text = "Submit" onPress = {props.handleSubmit} />
-                            </View>
-                        )
-                    }
-                </Formik>
-            </TouchableWithoutFeedback>
-        </View>
+                                    <Button
+                                        title = "Add images (optional)"
+                                        color = "maroon"
+                                        onPress = {() => navigation.navigate("AddImage")}
+                                    />
+
+                                    <FlatButton text = "Submit" onPress = {props.handleSubmit} />
+                                </View>
+                            )
+                        }
+                    </Formik>
+            </View>
+        </TouchableWithoutFeedback>
     );
 }
