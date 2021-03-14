@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
+import {createMaterialBottomTabNavigator} from "@react-navigation/material-bottom-tabs";
 import {MaterialIcons} from "@expo/vector-icons";
 
 import {connect} from "react-redux";
@@ -8,8 +8,9 @@ import {fetchUser} from "../redux/actions/Index";
 
 import Dashboard from "../routes/Dashboard";
 import Account from "../routes/Account";
+import AddComplaint from "../routes/AddComplaint";
 
-const Tab = createBottomTabNavigator();
+const Tab = createMaterialBottomTabNavigator();
 
 class Main extends Component
 {
@@ -21,7 +22,7 @@ class Main extends Component
     render()
     {
         return(
-            <Tab.Navigator>
+            <Tab.Navigator initialRouteName = "Dashboard" shifting = {true}  activeColor = "#0496ff" inactiveColor = "#c9c9c9" barStyle = {{ backgroundColor: '#fffbfc' }}>
                 <Tab.Screen
                     name = "Dashboard"
                     component = {Dashboard}
@@ -30,6 +31,20 @@ class Main extends Component
                             tabBarIcon: ({color, size}) =>
                             (
                                 <MaterialIcons name = "home" color = {color} size = {26} />
+                            )
+                        }
+                    }
+                />
+
+                <Tab.Screen
+                    name = "AddComplaint"
+                    component = {AddComplaint}
+                    options = {
+                        {
+                            title: "New Complaint",
+                            tabBarIcon: ({color, size}) =>
+                            (
+                                <MaterialIcons name = "add-box" color = {color} size = {26} />
                             )
                         }
                     }

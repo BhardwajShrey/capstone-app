@@ -1,15 +1,13 @@
 import React, {useState} from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, Modal, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity} from 'react-native';
 import {MaterialIcons} from "@expo/vector-icons";
 
 import {globalStyles} from "../styles/Global";
 import ComplaintForm from "./ComplaintForm";
 import Card from "../shared/Card";
 
-export default function Feed()
+export default function Feed({navigation})
 {
-    const [modalOpen, setModalOpen] = useState(false);
-
     const [reviews, setReviews] = useState(
         [
             { Title: 'An open complaint', Status: "Processing", Body: 'lorem ipsum jatt da muqabla dass mennu kithe ai ni jatt', key: '1' },
@@ -27,35 +25,8 @@ export default function Feed()
         ]
     );
 
-    const addComplaint = (complaint) =>
-    {
-        console.log(complaint);
-        setModalOpen(false);
-    }
-
     return (
         <View style = {globalStyles.container}>
-            <Modal visible = {modalOpen} animationType = "slide">
-                <TouchableWithoutFeedback onPress = {Keyboard.dismiss}>
-                    <View style = {styles.modalContent}>
-                        <MaterialIcons
-                            name = "close"
-                            size = {24}
-                            style = {{...styles.modalToggle, ...styles.modalClose}}
-                            onPress = {() => setModalOpen(false)}
-                        />
-                        <ComplaintForm addComplaint = {addComplaint} />
-                    </View>
-                </TouchableWithoutFeedback>
-            </Modal>
-
-            <MaterialIcons
-                name = "add"
-                size = {24}
-                style = {styles.modalToggle}
-                onPress = {() => setModalOpen(true)}
-            />
-
             <FlatList
                 data = {reviews}
                 renderItem = {
@@ -73,7 +44,6 @@ export default function Feed()
                     )
                 }
             />  
-
         </View>
     )
 }
