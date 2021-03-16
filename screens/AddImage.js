@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, TouchableOpacityBase } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import { Camera } from 'expo-camera';
+import * as ImagePicker from "expo-image-picker";
 import {MaterialIcons} from "@expo/vector-icons";
 
 export default function AddImage() {
-  const [hasPermission, setHasPermission] = useState(null);
+  const [hasGalleryPermission, setHasGalleryPermission] = useState(null);
+  const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [camera, setCamera] = useState(null);
+  const [image, setImage] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
 
   const takePicture = async () =>
@@ -13,23 +16,42 @@ export default function AddImage() {
     if(camera)
     {
         const data = await camera.takePictureAsync(null);
-        console.log(data.uri);
+        setImage(data.uri);
     }
   }
 
   useEffect(() => {
     (async () => {
-      const { status } = await Camera.requestPermissionsAsync();
-      setHasPermission(status === 'granted');
+      const cameraStatus = await Camera.requestPermissionsAsync();
+      setHasCameraPermission(cameraStatus.status === 'granted');
+
+      const galleryStatus = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      setHasGalleryPermission(galleryStatus.status === 'granted');
     })();
   }, []);
 
-  if (hasPermission === null) {
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
+
+  if (hasCameraPermission === null || hasGalleryPermission === null) {
     return <View />;
   }
-  if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
+  if (hasCameraPermission === false || hasGalleryPermission === false) {
+    return <Text>No access to camera/gallery...</Text>;
   }
+
   return (
     <View style={styles.container}>
       <Camera ref = {ref => setCamera(ref)} style={styles.camera} type={type}>
@@ -46,16 +68,25 @@ export default function AddImage() {
                 <MaterialIcons
                     name = "repeat"
                     size = {35}
-                    style = {styles.buttonIcon}
+                    color = "#fff"
                 />
             </TouchableOpacity>
-            <MaterialIcons
-                name = "camera"
-                size = {69}
-                style = {styles.clickButton}
-                onPress = {() => takePicture()}
-            />
+            <TouchableOpacity style = {styles.clickButton} onPress = {() => takePicture()}>
+              <MaterialIcons
+                  name = "camera"
+                  size = {90}
+                  color = "#fff"
+              />
+            </TouchableOpacity>
+            <TouchableOpacity style = {styles.clickButton} onPress = {() => pickImage()}>
+              <MaterialIcons
+                  name = "save"
+                  size = {35}
+                  color = "#fff"
+              />
+            </TouchableOpacity>
         </View>
+        {image && <Image source = {{uri: image}} style = {{flex: 1}} />}
       </Camera>
     </View>
   );
@@ -75,7 +106,7 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   flipButton: {
-    flex: 0.1,
+    flex: 0.2,
     alignSelf: 'flex-end',
     alignItems: 'center',
   },
@@ -84,8 +115,5 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
     alignItems: 'center',
     color:"white"
-  },
-  buttonIcon: {
-    color: 'white',
-  },
+  }
 });
