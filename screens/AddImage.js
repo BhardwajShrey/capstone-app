@@ -4,7 +4,7 @@ import { Camera } from 'expo-camera';
 import * as ImagePicker from "expo-image-picker";
 import {MaterialIcons} from "@expo/vector-icons";
 
-export default function AddImage() {
+export default function AddImage({navigation}) {
   const [hasGalleryPermission, setHasGalleryPermission] = useState(null);
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [camera, setCamera] = useState(null);
@@ -79,6 +79,13 @@ export default function AddImage() {
               />
             </TouchableOpacity>
             <TouchableOpacity style = {styles.clickButton} onPress = {() => pickImage()}>
+              <MaterialIcons
+                  name = "image"
+                  size = {35}
+                  color = "#fff"
+              />
+            </TouchableOpacity>
+            <TouchableOpacity style = {styles.clickButton} onPress = {() => navigation.navigate("ComplaintForm", {image})}>
               <MaterialIcons
                   name = "save"
                   size = {35}

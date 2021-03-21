@@ -15,8 +15,32 @@ const complaintSchema = yup.object(
 );
 // test function arguments = (name given to test, error message to be displayed, function to validate against)
 
-export default function ComplaintForm({navigation})
+export default function ComplaintForm({navigation, route})
 {
+    var imageButton = null;
+
+    if(route.params !== undefined)
+    {
+        console.log(route.params.image)
+        imageButton = (
+            <Button
+                title = "Add more images..."
+                color = "blue"
+                onPress = {() => navigation.navigate("AddImage")}
+            />
+        );
+    }
+    else
+    {
+        imageButton = (
+            <Button
+                title = "Add images (optional)"
+                color = "maroon"
+                onPress = {() => navigation.navigate("AddImage")}
+            />
+        );
+    }
+
     return(
         <TouchableWithoutFeedback onPress = {Keyboard.dismiss}>
             <View style = {globalStyles.container}>
@@ -64,12 +88,12 @@ export default function ComplaintForm({navigation})
                                     />
                                     <Text style = {globalStyles.errorText}>{props.touched.Location && props.errors.Location}</Text>
 
-                                    <Button
+                                    {/* <Button
                                         title = "Add images (optional)"
                                         color = "maroon"
                                         onPress = {() => navigation.navigate("AddImage")}
-                                    />
-
+                                    /> */}
+                                    {imageButton}
                                     <FlatButton text = "Submit" onPress = {props.handleSubmit} />
                                 </View>
                             )
