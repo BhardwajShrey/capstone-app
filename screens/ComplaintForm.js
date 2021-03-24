@@ -18,28 +18,25 @@ const complaintSchema = yup.object(
 export default function ComplaintForm({navigation, route})
 {
     const [images, setImages] = useState([]);
-    var lastImage = null;
+    const [currRoute, setCurrRoute] = useState(route);
 
     useEffect(
         () =>
         {
-            console.log(images);
-            if(route.params?.image && route.params.image !== lastImage)
+            // console.log(images);
+            if(route !== currRoute && route.params?.image)
             {
-                lastImage = route.params.image;
-                console.log(lastImage);
+                setImages(
+                    (currentImages) =>
+                    {
+                        return [...currentImages, route.params.image]
+                    }
+                );
 
-                if(lastImage !== images[images.length - 1])
-                {
-                    setImages(
-                        (currentImages) =>
-                        {
-                            return [...currentImages, lastImage]
-                        }
-                    );
-                }
+                setCurrRoute(route);
             }
-        }
+            
+        }, [route]
     );
 
     return(
@@ -53,7 +50,7 @@ export default function ComplaintForm({navigation, route})
                             {
                                 actions.resetForm();
                                 setImages([]);
-                                console.log(values);
+                                console.log(images);
                             }
                         }
                     >
