@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import {View, Text, TextInput, Button, TouchableWithoutFeedback, Keyboard} from "react-native";
 import {Formik} from "formik";
 import * as yup from "yup";
@@ -17,29 +17,30 @@ const complaintSchema = yup.object(
 
 export default function ComplaintForm({navigation, route})
 {
-    var imageButton = null;
+    const [images, setImages] = useState([]);
+    var lastImage = null;
 
-    if(route.params !== undefined)
-    {
-        console.log(route.params.image)
-        imageButton = (
-            <Button
-                title = "Add more images..."
-                color = "blue"
-                onPress = {() => navigation.navigate("AddImage")}
-            />
-        );
-    }
-    else
-    {
-        imageButton = (
-            <Button
-                title = "Add images (optional)"
-                color = "maroon"
-                onPress = {() => navigation.navigate("AddImage")}
-            />
-        );
-    }
+    useEffect(
+        () =>
+        {
+            console.log(images);
+            if(route.params?.image && route.params.image !== lastImage)
+            {
+                lastImage = route.params.image;
+                console.log(lastImage);
+
+                if(lastImage !== images[images.length - 1])
+                {
+                    setImages(
+                        (currentImages) =>
+                        {
+                            return [...currentImages, lastImage]
+                        }
+                    );
+                }
+            }
+        }
+    );
 
     return(
         <TouchableWithoutFeedback onPress = {Keyboard.dismiss}>
@@ -51,7 +52,8 @@ export default function ComplaintForm({navigation, route})
                             (values, actions) =>
                             {
                                 actions.resetForm();
-                                addComplaint(values);
+                                setImages([]);
+                                console.log(values);
                             }
                         }
                     >
@@ -93,7 +95,12 @@ export default function ComplaintForm({navigation, route})
                                         color = "maroon"
                                         onPress = {() => navigation.navigate("AddImage")}
                                     /> */}
-                                    {imageButton}
+                                    <Button
+                                        title = "Add images..."
+                                        color = "#5863f8"
+                                        onPress = {() => navigation.navigate("AddImage")}
+                                    />
+                                    <Text style = {globalStyles.errorText}>Images attached: {images.length}</Text>
                                     <FlatButton text = "Submit" onPress = {props.handleSubmit} />
                                 </View>
                             )

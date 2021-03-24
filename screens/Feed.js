@@ -3,10 +3,9 @@ import { StyleSheet, Text, View, FlatList, TouchableOpacity} from 'react-native'
 import {MaterialIcons} from "@expo/vector-icons";
 
 import {globalStyles} from "../styles/Global";
-import ComplaintForm from "./ComplaintForm";
 import Card from "../shared/Card";
 
-export default function Feed({navigation})
+export default function Feed()
 {
     const [reviews, setReviews] = useState(
         [
