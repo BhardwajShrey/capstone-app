@@ -2,9 +2,13 @@ import React, {useState, useEffect} from "react";
 import {View, Text, TextInput, Button, TouchableWithoutFeedback, Keyboard} from "react-native";
 import {Formik} from "formik";
 import * as yup from "yup";
+import firebase from "firebase";
 
 import {globalStyles} from "../styles/Global";
 import FlatButton from "../shared/FlatButton";
+
+require("firebase/firestore");
+require("firebase/firebase-storage");
 
 const complaintSchema = yup.object(
     {
@@ -19,6 +23,37 @@ export default function ComplaintForm({navigation, route})
 {
     const [images, setImages] = useState([]);
     const [currRoute, setCurrRoute] = useState(route);
+
+    const uploadData = async (values) =>
+    {
+        const imagesToUpload = images;
+        const res = await fetch(imagesToUpload);
+        const blob = await res.blob();
+
+        const task = firebase.storage().ref().child(`post/${firebase.auth().currentUser.uid}/${Math.random().toString(36)}`).put(blob);
+
+        const taskProgress = snapshot =>
+        {
+            console.log(`transferred: ${snapshot.bytesTransferred}`);
+        }
+
+        const taskCompleted = () =>
+        {
+            task.snapshot.ref.getDownloadURL().then(
+                (snapshot) =>
+                {
+                    console.log(snapshot);
+                }
+            )
+        }
+
+        const taskError = snapshot =>
+        {
+            console.log(snapshot);
+        }
+
+        task.on("state_changed", taskProgress, taskError, taskCompleted);
+    }
 
     useEffect(
         () =>
@@ -49,8 +84,9 @@ export default function ComplaintForm({navigation, route})
                             (values, actions) =>
                             {
                                 actions.resetForm();
+                                // console.log(images);
+                                uploadData(values);
                                 setImages([]);
-                                console.log(images);
                             }
                         }
                     >
