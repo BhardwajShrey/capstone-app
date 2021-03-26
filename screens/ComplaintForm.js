@@ -24,10 +24,9 @@ export default function ComplaintForm({navigation, route})
     const [images, setImages] = useState([]);
     const [currRoute, setCurrRoute] = useState(route);
 
-    const uploadData = async (values) =>
+    const uploadImages = async (image) =>
     {
-        const imagesToUpload = images;
-        const res = await fetch(imagesToUpload);
+        const res = await fetch(image);
         const blob = await res.blob();
 
         const task = firebase.storage().ref().child(`post/${firebase.auth().currentUser.uid}/${Math.random().toString(36)}`).put(blob);
@@ -42,17 +41,25 @@ export default function ComplaintForm({navigation, route})
             task.snapshot.ref.getDownloadURL().then(
                 (snapshot) =>
                 {
-                    console.log(snapshot);
+                    // console.log(snapshot);
+                    return snapshot
                 }
             )
         }
 
         const taskError = snapshot =>
         {
-            console.log(snapshot);
+            // console.log(snapshot);
+            return snapshot;
         }
 
         task.on("state_changed", taskProgress, taskError, taskCompleted);
+    }
+
+    const uploadData = () =>
+    {
+        const imagesUploaded = images.map(uploadImages);
+        console.log(imagesUploaded);
     }
 
     useEffect(
