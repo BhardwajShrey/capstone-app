@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {View, Text, TextInput, Button, TouchableWithoutFeedback, Keyboard} from "react-native";
+import {View, Text, TextInput, Button, TouchableWithoutFeedback, Keyboard, Alert} from "react-native";
 import {Formik} from "formik";
 import * as yup from "yup";
 import firebase from "firebase";
@@ -24,42 +24,46 @@ export default function ComplaintForm({navigation, route})
     const [images, setImages] = useState([]);
     const [currRoute, setCurrRoute] = useState(route);
 
-    const uploadImages = async (image) =>
+    const uploadData = (values, storageURL = null) =>
     {
-        const res = await fetch(image);
-        const blob = await res.blob();
-
-        const task = firebase.storage().ref().child(`post/${firebase.auth().currentUser.uid}/${Math.random().toString(36)}`).put(blob);
-
-        const taskProgress = snapshot =>
-        {
-            console.log(`transferred: ${snapshot.bytesTransferred}`);
-        }
-
-        const taskCompleted = () =>
-        {
-            task.snapshot.ref.getDownloadURL().then(
-                (snapshot) =>
-                {
-                    // console.log(snapshot);
-                    return snapshot
-                }
-            )
-        }
-
-        const taskError = snapshot =>
-        {
-            // console.log(snapshot);
-            return snapshot;
-        }
-
-        task.on("state_changed", taskProgress, taskError, taskCompleted);
+        console.log(values);
+        console.log(storageURL);
     }
 
-    const uploadData = () =>
+    const uploadToStorage = async (values) =>
     {
-        const imagesUploaded = images.map(uploadImages);
-        console.log(imagesUploaded);
+        if(images.length !== 0)
+        {
+            const res = await fetch(images[0]);
+            const blob = await res.blob()
+            const task = firebase.storage().ref().child(`post/${firebase.auth().currentUser.uid}/${Math.random().toString(36)}`).put(blob)
+            const taskProgress = snapshot =>
+            {
+                console.log(`transferred: ${snapshot.bytesTransferred}`);
+            }
+        
+            const taskCompleted = () =>
+            {
+                task.snapshot.ref.getDownloadURL().then(
+                    (snapshot) =>
+                    {
+                        // console.log(snapshot);
+                        uploadData(values, snapshot);
+                    }
+                )
+            }
+        
+            const taskError = snapshot =>
+            {
+                console.log(snapshot);
+            }
+        
+            task.on("state_changed", taskProgress, taskError, taskCompleted);
+        }
+        else
+        {
+            uploadData(values);
+        }
     }
 
     useEffect(
@@ -81,6 +85,35 @@ export default function ComplaintForm({navigation, route})
         }, [route]
     );
 
+    var addImageButton = null;
+    var imagesAttached = null;
+
+    if(images.length !== 0)
+    {
+        addImageButton = (
+            <Button
+                title = "Add an image..."
+                color = "#5863f8"
+                onPress = {() => Alert.alert("Image already added", "Cannot add more than one image", [{text: "Okay"}])}
+            />
+        );
+        imagesAttached = (
+            <Text style = {globalStyles.errorText}>One image attached.</Text>
+        );
+    }
+    else
+    {
+        addImageButton = (
+            <Button
+                title = "Add an image..."
+                color = "#5863f8"
+                onPress = {() => navigation.navigate("AddImage")}
+            />
+        );
+        imagesAttached = null;
+    }
+    
+
     return(
         <TouchableWithoutFeedback onPress = {Keyboard.dismiss}>
             <View style = {globalStyles.container}>
@@ -92,7 +125,7 @@ export default function ComplaintForm({navigation, route})
                             {
                                 actions.resetForm();
                                 // console.log(images);
-                                uploadData(values);
+                                uploadToStorage(values);
                                 setImages([]);
                             }
                         }
@@ -135,12 +168,8 @@ export default function ComplaintForm({navigation, route})
                                         color = "maroon"
                                         onPress = {() => navigation.navigate("AddImage")}
                                     /> */}
-                                    <Button
-                                        title = "Add images..."
-                                        color = "#5863f8"
-                                        onPress = {() => navigation.navigate("AddImage")}
-                                    />
-                                    <Text style = {globalStyles.errorText}>Images attached: {images.length}</Text>
+                                    {addImageButton}
+                                    {imagesAttached}
                                     <FlatButton text = "Submit" onPress = {props.handleSubmit} />
                                 </View>
                             )
