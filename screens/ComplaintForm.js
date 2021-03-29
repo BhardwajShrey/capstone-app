@@ -26,8 +26,27 @@ export default function ComplaintForm({navigation, route})
 
     const uploadData = (values, storageURL = null) =>
     {
-        console.log(values);
-        console.log(storageURL);
+        // console.log(values);
+        // console.log(storageURL);
+        firebase.firestore().collection("posts").doc(firebase.auth().currentUser.uid).collection("userPosts").add(
+            {
+                image: storageURL,
+                body: values.Complaint,
+                title: values.Title,
+                location: values.Location,
+                creation: firebase.firestore.FieldValue.serverTimestamp(),
+                comments: "",
+                status: "Processing",
+                type: ["stray animals", "water logging", "encroachment"]
+            }
+        ).then(
+            (
+                function()
+                {
+                    console.log("Record created...");
+                }
+            )
+        );
     }
 
     const uploadToStorage = async (values) =>
