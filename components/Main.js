@@ -4,7 +4,7 @@ import {MaterialIcons} from "@expo/vector-icons";
 
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {fetchUser} from "../redux/actions/Index";
+import {fetchUser, fetchUserPosts} from "../redux/actions/Index";
 
 import Dashboard from "../routes/Dashboard";
 import Account from "../routes/Account";
@@ -17,6 +17,7 @@ class Main extends Component
     componentDidMount()
     {
         this.props.fetchUser();
+        this.props.fetchUserPosts();
     }
 
     render()
@@ -74,6 +75,6 @@ const mapStateToProps = (store) => (
     }
 );
 
-const mapDispatchProps = (dispatch) => bindActionCreators({fetchUser}, dispatch);
+const mapDispatchProps = (dispatch) => bindActionCreators({fetchUser, fetchUserPosts}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchProps)(Main);
