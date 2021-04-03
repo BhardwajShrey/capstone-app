@@ -55,7 +55,7 @@ export function fetchUserPosts()
                             posts
                         }
                     );
-                    console.log(posts);
+                    // console.log(posts);
                 }
             )
         }

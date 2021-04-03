@@ -2,13 +2,15 @@ import React from 'react';
 import {createStackNavigator} from "@react-navigation/stack";
 
 import Feed from "../screens/Feed";
+import ComplaintDetails from "../screens/ComplaintDetails";
 
 const Stack = createStackNavigator();
 
 export default function Dashboard() {
     return (
         <Stack.Navigator initialRouteName = "Feed" screenOptions = {{headerStyle: {backgroundColor: "#3f7cac"}, headerTintColor: "#fff"}}>
-            <Stack.Screen name = "Feed" component = {Feed} />
+            <Stack.Screen name = "Feed" component = {Feed} options = {{title: "Open Complaints"}} />
+            <Stack.Screen name = "ComplaintDetails" component = {ComplaintDetails} options = {{title: "Complaint Details"}} />
         </Stack.Navigator>
     )
 }

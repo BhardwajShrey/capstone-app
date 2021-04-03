@@ -1,44 +1,47 @@
 import React, {useState} from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity} from 'react-native';
-import {MaterialIcons} from "@expo/vector-icons";
+import {connect} from "react-redux";
 
 import {globalStyles} from "../styles/Global";
 import Card from "../shared/Card";
 
-export default function Feed()
+function Feed(props)
 {
-    const [reviews, setReviews] = useState(
-        [
-            { Title: 'An open complaint', Status: "Processing", Body: 'lorem ipsum jatt da muqabla dass mennu kithe ai ni jatt', key: '1' },
-            { Title: 'Another open complaint', Status: "Repair in progress", Body: 'lorem ipsum death route vajde salute ai kal kinne de ', key: '2' },
-            { Title: 'ek aur open complaint', Status: "Operator assigned", Body: 'lorem ipsum ho gair kanuni yaar mere ghumde firde raatan nu', key: '3' },
-            { Title: 'An open complaint', Status: "Processing", Body: 'lorem ipsum jatt da muqabla dass mennu kithe ai ni jatt', key: '4' },
-            { Title: 'Another open complaint', Status: "Repair in progress", Body: 'lorem ipsum death route vajde salute ai kal kinne dek', key: '5' },
-            { Title: 'ek aur open complaint', Status: "Operator assigned", Body: 'lorem ipsum ho gair kanuni yaar mere ghumde firde raatan nu', key: '6' },
-            { Title: 'An open complaint', Status: "Processing", Body: 'lorem ipsum jatt da muqabla dass mennu kithe ai ni jatt', key: '7' },
-            { Title: 'Another open complaint', Status: "Repair in progress", Body: 'lorem ipsum death route vajde salute ai kal kinne dek', key: '8' },
-            { Title: 'ek aur open complaint', Status: "Operator assigned", Body: 'lorem ipsum ho gair kanuni yaar mere ghumde firde raatan nu', key: '9' },
-            { Title: 'An open complaint', Status: "Processing", Body: 'lorem ipsum jatt da muqabla dass mennu kithe ai ni jatt', key: '10' },
-            { Title: 'Another open complaint', Status: "Repair in progress", Body: 'lorem ipsum death route vajde salute ai kal kinne dek', key: '11' },
-            { Title: 'ek aur open complaint', Status: "Operator assigned", Body: 'lorem ipsum ho gair kanuni yaar mere ghumde firde raatan nu', key: '12' }
-        ]
-    );
+    // const [complaints, setComplaints] = useState(
+    //     [
+    //         { Location: "Main road mandir ke saamne ekdum", Title: 'An open complaint', Status: "Processing", Body: 'lorem ipsum jatt da muqabla dass mennu kithe ai ni jatt', key: '1' },
+    //         { Location: "Main road mandir ke saamne ekdum", Title: 'Another open complaint', Status: "Repair in progress", Body: 'lorem ipsum death route vajde salute ai kal kinne de ', key: '2' },
+    //         { Location: "Main road mandir ke saamne ekdum", Title: 'ek aur open complaint', Status: "Operator assigned", Body: 'lorem ipsum ho gair kanuni yaar mere ghumde firde raatan nu', key: '3' },
+    //         { Location: "Main road mandir ke saamne ekdum", Title: 'An open complaint', Status: "Processing", Body: 'lorem ipsum jatt da muqabla dass mennu kithe ai ni jatt', key: '4' },
+    //         { Location: "Main road mandir ke saamne ekdum", Title: 'Another open complaint', Status: "Repair in progress", Body: 'lorem ipsum death route vajde salute ai kal kinne dek', key: '5' },
+    //         { Location: "Main road mandir ke saamne ekdum", Title: 'ek aur open complaint', Status: "Operator assigned", Body: 'lorem ipsum ho gair kanuni yaar mere ghumde firde raatan nu', key: '6' },
+    //         { Location: "Main road mandir ke saamne ekdum", Title: 'An open complaint', Status: "Processing", Body: 'lorem ipsum jatt da muqabla dass mennu kithe ai ni jatt', key: '7' },
+    //         { Location: "Main road mandir ke saamne ekdum", Title: 'Another open complaint', Status: "Repair in progress", Body: 'lorem ipsum death route vajde salute ai kal kinne dek', key: '8' },
+    //         { Location: "Main road mandir ke saamne ekdum", Title: 'ek aur open complaint', Status: "Operator assigned", Body: 'lorem ipsum ho gair kanuni yaar mere ghumde firde raatan nu', key: '9' },
+    //         { Location: "Main road mandir ke saamne ekdum", Title: 'An open complaint', Status: "Processing", Body: 'lorem ipsum jatt da muqabla dass mennu kithe ai ni jatt', key: '10' },
+    //         { Location: "Main road mandir ke saamne ekdum", Title: 'Another open complaint', Status: "Repair in progress", Body: 'lorem ipsum death route vajde salute ai kal kinne dek', key: '11' },
+    //         { Location: "Main road mandir ke saamne ekdum", Title: 'ek aur open complaint', Status: "Operator assigned", Body: 'lorem ipsum ho gair kanuni yaar mere ghumde firde raatan nu', key: '12' }
+    //     ]
+    // );
+
+    const {currentUser, posts} = props;
+    console.log(currentUser, posts);
 
     return (
         <View style = {globalStyles.container}>
             <FlatList
-                data = {reviews}
+                data = {posts}
                 renderItem = {
                     ({item}) =>
                     (
                         <TouchableOpacity>
                             <Card>
-                                <Text style = {globalStyles.titleText}>{item.Title}</Text>
-                                <Text>{item.Body}</Text>
+                                <Text style = {globalStyles.titleText}>{item.title}</Text>
+                                <Text>{item.body}</Text>
                                 <View style = {styles.status}>
-                                    <Text>Status: {item.Status}</Text>
+                                    <Text>Status: {item.status}</Text>
                                 </View>
-                                </Card>
+                            </Card>
                         </TouchableOpacity>
                     )
                 }
@@ -46,6 +49,15 @@ export default function Feed()
         </View>
     )
 }
+
+const mapStateToProps = (store) => (
+    {
+        currentUser: store.userState.currentUser,
+        posts: store.userState.posts
+    }
+);
+
+export default connect(mapStateToProps, null)(Feed);
 
 const styles = StyleSheet.create(
     {
