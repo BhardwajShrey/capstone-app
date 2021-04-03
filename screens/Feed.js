@@ -25,7 +25,7 @@ function Feed(props)
     // );
 
     const {currentUser, posts} = props;
-    console.log(currentUser, posts);
+    // console.log(currentUser, posts);
 
     return (
         <View style = {globalStyles.container}>
@@ -34,10 +34,10 @@ function Feed(props)
                 renderItem = {
                     ({item}) =>
                     (
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress = {() => props.navigation.navigate("ComplaintDetails", item)}>
                             <Card>
                                 <Text style = {globalStyles.titleText}>{item.title}</Text>
-                                <Text>{item.body}</Text>
+                                <Text>{item.location}</Text>
                                 <View style = {styles.status}>
                                     <Text>Status: {item.status}</Text>
                                 </View>
