@@ -6,7 +6,21 @@ import Card from "../shared/Card";
 
 export default function ReviewDetails({route})
 {
-    // console.log(route.params.image);
+    console.log(route.params.image);
+
+    var imageRenderer = null;
+
+    if(route.params.image)
+    {
+        console.log("image should load...");
+        imageRenderer = (
+            <Image
+                style = {styles.image}
+                source={{uri: "https://reactjs.org/logo-og.png"}}
+                onLoadStart = {() => console.log("Burp")}
+            />
+        );
+    }
 
     return(
         <View style = {globalStyles.container}>
@@ -18,6 +32,8 @@ export default function ReviewDetails({route})
                 <View style = {styles.status}>
                     <Text>Categories: {route.params.type[0]}, {route.params.type[1]}, {route.params.type[2]}</Text>
                 </View>
+
+                {imageRenderer}
 
                 <View style = {styles.status}>
                     <Text>Status: {route.params.status}</Text>
@@ -39,6 +55,8 @@ const styles = StyleSheet.create(
         },
         image: {
             flex: 1,
+            width: 400,
+            height: 400,
             aspectRatio: 1 / 1
         }
     }

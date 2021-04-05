@@ -34,7 +34,18 @@ function Feed(props)
                 renderItem = {
                     ({item}) =>
                     (
-                        <TouchableOpacity onPress = {() => props.navigation.navigate("ComplaintDetails", item)}>
+                        <TouchableOpacity 
+                            onPress = {
+                                () => props.navigation.navigate("ComplaintDetails", {
+                                    title: item.title,
+                                    body: item.body,
+                                    location: item.location,
+                                    type: item.type,
+                                    status: item.status,
+                                    image: item.image
+                                })
+                            }
+                        >
                             <Card>
                                 <Text style = {globalStyles.titleText}>{item.title}</Text>
                                 <Text>{item.location}</Text>
