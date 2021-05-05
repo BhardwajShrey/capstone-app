@@ -3,24 +3,11 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 
 import {globalStyles} from "../styles/Global";
 import Card from "../shared/Card";
+import Label from "../shared/Label";
 
 export default function ReviewDetails({route})
 {
     console.log(route.params.image);
-
-    var imageRenderer = null;
-
-    if(route.params.image)
-    {
-        console.log("image should load...");
-        imageRenderer = (
-            <Image
-                style = {styles.image}
-                source={{uri: "https://reactjs.org/logo-og.png"}}
-                onLoadStart = {() => console.log("Burp")}
-            />
-        );
-    }
 
     return(
         <View style = {globalStyles.container}>
@@ -30,10 +17,10 @@ export default function ReviewDetails({route})
                 <Text>Location: {route.params.location}</Text>
 
                 <View style = {styles.status}>
-                    <Text>Categories: {route.params.type[0]}, {route.params.type[1]}, {route.params.type[2]}</Text>
+                    <Label text = {route.params.type[0]} />
+                    <Label text = {route.params.type[1]} />
+                    <Label text = {route.params.type[2]} />
                 </View>
-
-                {imageRenderer}
 
                 <View style = {styles.status}>
                     <Text>Status: {route.params.status}</Text>
