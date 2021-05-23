@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, Button } from 'react-native';
 import { Camera } from 'expo-camera';
 import * as ImagePicker from "expo-image-picker";
 import {MaterialIcons} from "@expo/vector-icons";
@@ -34,7 +34,7 @@ export default function AddImage({navigation}) {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [1, 1],
       quality: 1,
     });
 
@@ -53,48 +53,73 @@ export default function AddImage({navigation}) {
   }
 
   return (
-    <View style={styles.container}>
-      <Camera ref = {ref => setCamera(ref)} style={styles.camera} type={type}>
-        <View style={styles.buttonContainer}>
-            <TouchableOpacity
-                style={styles.flipButton}
-                onPress={() => {
-                    setType(
-                      type === Camera.Constants.Type.back
-                        ? Camera.Constants.Type.front
-                        : Camera.Constants.Type.back
-                    );
-                }}>
-                <MaterialIcons
-                    name = "repeat"
-                    size = {35}
-                    color = "#fff"
-                />
-            </TouchableOpacity>
-            <TouchableOpacity style = {styles.clickButton} onPress = {() => takePicture()}>
-              <MaterialIcons
-                  name = "camera"
-                  size = {90}
-                  color = "#fff"
-              />
-            </TouchableOpacity>
-            <TouchableOpacity style = {styles.clickButton} onPress = {() => pickImage()}>
-              <MaterialIcons
-                  name = "image"
-                  size = {35}
-                  color = "#fff"
-              />
-            </TouchableOpacity>
-            <TouchableOpacity style = {styles.clickButton} onPress = {() => navigation.navigate("ComplaintForm", {image})}>
-              <MaterialIcons
-                  name = "save"
-                  size = {35}
-                  color = "#fff"
-              />
-            </TouchableOpacity>
-        </View>
-        {image && <Image source = {{uri: image}} style = {{flex: 1}} />}
-      </Camera>
+    // <View style={styles.container}>
+    //   <Camera ref = {ref => setCamera(ref)} style={styles.camera} type={type}>
+    //     <View style={styles.buttonContainer}>
+    //         <TouchableOpacity
+    //             style={styles.flipButton}
+    //             onPress={() => {
+    //                 setType(
+    //                   type === Camera.Constants.Type.back
+    //                     ? Camera.Constants.Type.front
+    //                     : Camera.Constants.Type.back
+    //                 );
+    //             }}>
+    //             <MaterialIcons
+    //                 name = "repeat"
+    //                 size = {35}
+    //                 color = "#fff"
+    //             />
+    //         </TouchableOpacity>
+    //         <TouchableOpacity style = {styles.clickButton} onPress = {() => takePicture()}>
+    //           <MaterialIcons
+    //               name = "camera"
+    //               size = {90}
+    //               color = "#fff"
+    //           />
+    //         </TouchableOpacity>
+    //         <TouchableOpacity style = {styles.clickButton} onPress = {() => pickImage()}>
+    //           <MaterialIcons
+    //               name = "image"
+    //               size = {35}
+    //               color = "#fff"
+    //           />
+    //         </TouchableOpacity>
+    //         <TouchableOpacity style = {styles.clickButton} onPress = {() => navigation.navigate("ComplaintForm", {image})}>
+    //           <MaterialIcons
+    //               name = "save"
+    //               size = {35}
+    //               color = "#fff"
+    //           />
+    //         </TouchableOpacity>
+    //     </View>
+    //     {image && <Image source = {{uri: image}} style = {{flex: 1}} />}
+    //   </Camera>
+    // </View>
+
+    <View style={{ flex: 1 }}>
+      <View style={styles.cameraContainer}>
+        <Camera
+          ref={ref => setCamera(ref)}
+          style={styles.fixedRatio}
+          type={type}
+          ratio={'1:1'} />
+      </View>
+
+      <Button
+        title="Flip Camera"
+        onPress={() => {
+          setType(
+            type === Camera.Constants.Type.back
+              ? Camera.Constants.Type.front
+              : Camera.Constants.Type.back
+          );
+        }}>
+      </Button>
+      <Button title="Take Picture" onPress={() => takePicture()} />
+      <Button title="Pick Image From Gallery" onPress={() => pickImage()} />
+      <Button title="Save" onPress={() => navigation.navigate("ComplaintForm", {image})} />
+      {image && <Image source={{ uri: image }} style={{ flex: 1 }} />}
     </View>
   );
 }
@@ -122,5 +147,13 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
     alignItems: 'center',
     color:"white"
+  },
+  cameraContainer: {
+    flex: 1,
+    flexDirection: 'row'
+  },
+  fixedRatio: {
+    flex: 1,
+    aspectRatio: 1
   }
 });

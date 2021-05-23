@@ -1,7 +1,7 @@
 import React from "react";
 import {StyleSheet, TouchableOpacity, Text, View} from "react-native";
 
-export default function FlatButton({text, onPress})
+export default function MiscButton({text, onPress})
 {
     return(
         <TouchableOpacity onPress = {onPress}>
@@ -20,7 +20,7 @@ const styles = StyleSheet.create(
             paddingHorizontal: 10,
             marginVertical: 15,
             marginHorizontal: 120,
-            backgroundColor: "#0c7489"
+            backgroundColor: "#704e2e"
         },
         buttonText: {
             color: "white",

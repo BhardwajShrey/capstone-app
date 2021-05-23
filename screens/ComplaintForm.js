@@ -6,6 +6,7 @@ import firebase from "firebase";
 
 import {globalStyles} from "../styles/Global";
 import FlatButton from "../shared/FlatButton";
+import MiscButton from "../shared/MiscButton";
 
 require("firebase/firestore");
 require("firebase/firebase-storage");
@@ -110,11 +111,7 @@ export default function ComplaintForm({navigation, route})
     if(images.length !== 0)
     {
         addImageButton = (
-            <Button
-                title = "Add an image..."
-                color = "#5863f8"
-                onPress = {() => Alert.alert("Image already added", "Cannot add more than one image", [{text: "Okay"}])}
-            />
+            <MiscButton text = "Add an image" onPress = {() => Alert.alert("Image already added", "Cannot add more than one image", [{text: "Okay"}])} />
         );
         imagesAttached = (
             <Text style = {globalStyles.errorText}>One image attached.</Text>
@@ -123,11 +120,7 @@ export default function ComplaintForm({navigation, route})
     else
     {
         addImageButton = (
-            <Button
-                title = "Add an image..."
-                color = "#5863f8"
-                onPress = {() => navigation.navigate("AddImage")}
-            />
+            <MiscButton text = "Add an image" onPress = {() => navigation.navigate("AddImage")} />
         );
         imagesAttached = null;
     }
@@ -189,6 +182,7 @@ export default function ComplaintForm({navigation, route})
                                     /> */}
                                     {addImageButton}
                                     {imagesAttached}
+                                    <MiscButton text = "Add a Location" onPress = {() => navigation.navigate("AddLocation")} />
                                     <FlatButton text = "Submit" onPress = {props.handleSubmit} />
                                 </View>
                             )

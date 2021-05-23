@@ -23,7 +23,7 @@ class Main extends Component
     render()
     {
         return(
-            <Tab.Navigator initialRouteName = "Dashboard" shifting = {true}  activeColor = "#0496ff" inactiveColor = "#c9c9c9" barStyle = {{ backgroundColor: '#fffbfc' }}>
+            <Tab.Navigator initialRouteName = "Dashboard" shifting = {true}  activeColor = "#4c937f" inactiveColor = "#c9c9c9" barStyle = {{ backgroundColor: '#fffbfc' }}>
                 <Tab.Screen
                     name = "Dashboard"
                     component = {Dashboard}
