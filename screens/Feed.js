@@ -7,23 +7,6 @@ import Card from "../shared/Card";
 
 function Feed(props)
 {
-    // const [complaints, setComplaints] = useState(
-    //     [
-    //         { Location: "Main road mandir ke saamne ekdum", Title: 'An open complaint', Status: "Processing", Body: 'lorem ipsum jatt da muqabla dass mennu kithe ai ni jatt', key: '1' },
-    //         { Location: "Main road mandir ke saamne ekdum", Title: 'Another open complaint', Status: "Repair in progress", Body: 'lorem ipsum death route vajde salute ai kal kinne de ', key: '2' },
-    //         { Location: "Main road mandir ke saamne ekdum", Title: 'ek aur open complaint', Status: "Operator assigned", Body: 'lorem ipsum ho gair kanuni yaar mere ghumde firde raatan nu', key: '3' },
-    //         { Location: "Main road mandir ke saamne ekdum", Title: 'An open complaint', Status: "Processing", Body: 'lorem ipsum jatt da muqabla dass mennu kithe ai ni jatt', key: '4' },
-    //         { Location: "Main road mandir ke saamne ekdum", Title: 'Another open complaint', Status: "Repair in progress", Body: 'lorem ipsum death route vajde salute ai kal kinne dek', key: '5' },
-    //         { Location: "Main road mandir ke saamne ekdum", Title: 'ek aur open complaint', Status: "Operator assigned", Body: 'lorem ipsum ho gair kanuni yaar mere ghumde firde raatan nu', key: '6' },
-    //         { Location: "Main road mandir ke saamne ekdum", Title: 'An open complaint', Status: "Processing", Body: 'lorem ipsum jatt da muqabla dass mennu kithe ai ni jatt', key: '7' },
-    //         { Location: "Main road mandir ke saamne ekdum", Title: 'Another open complaint', Status: "Repair in progress", Body: 'lorem ipsum death route vajde salute ai kal kinne dek', key: '8' },
-    //         { Location: "Main road mandir ke saamne ekdum", Title: 'ek aur open complaint', Status: "Operator assigned", Body: 'lorem ipsum ho gair kanuni yaar mere ghumde firde raatan nu', key: '9' },
-    //         { Location: "Main road mandir ke saamne ekdum", Title: 'An open complaint', Status: "Processing", Body: 'lorem ipsum jatt da muqabla dass mennu kithe ai ni jatt', key: '10' },
-    //         { Location: "Main road mandir ke saamne ekdum", Title: 'Another open complaint', Status: "Repair in progress", Body: 'lorem ipsum death route vajde salute ai kal kinne dek', key: '11' },
-    //         { Location: "Main road mandir ke saamne ekdum", Title: 'ek aur open complaint', Status: "Operator assigned", Body: 'lorem ipsum ho gair kanuni yaar mere ghumde firde raatan nu', key: '12' }
-    //     ]
-    // );
-
     const {currentUser, posts} = props;
     // console.log(currentUser, posts);
 

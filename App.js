@@ -14,6 +14,8 @@ import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
 import Main from "./components/Main";
 
+// console.disableYellowBox = true;
+
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional

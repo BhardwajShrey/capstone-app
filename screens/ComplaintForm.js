@@ -3,6 +3,8 @@ import {View, Text, TextInput, Button, TouchableWithoutFeedback, Keyboard, Alert
 import {Formik} from "formik";
 import * as yup from "yup";
 import firebase from "firebase";
+import * as Location from 'expo-location';
+import CheckBox from "react-native-check-box";
 
 import {globalStyles} from "../styles/Global";
 import FlatButton from "../shared/FlatButton";
@@ -25,6 +27,41 @@ export default function ComplaintForm({navigation, route})
     const [images, setImages] = useState([]);
     const [currRoute, setCurrRoute] = useState(route);
 
+    const [covidAreaCheckBox, setCovidAreaCheckBox] = useState(false);
+    const [covidViolationCheckBox, setCovidViolationCheckBox] = useState(false);
+
+    const [location, setLocation] = useState(null);
+    const [errorMsg, setErrorMsg] = useState(null);
+
+    useEffect(() => {
+        (async () => {
+          let { status } = await Location.requestPermissionsAsync();
+          if (status !== 'granted') {
+            setErrorMsg('Permission to access location was denied');
+            return;
+          }   
+          let location = await Location.getCurrentPositionAsync({});
+          setLocation(location);
+        })();
+    }, []); 
+
+    let position = 'Waiting...';
+
+    var coordinates = [];
+
+    if (errorMsg) {
+        position = errorMsg;
+    } else if (location) {
+        let temp = JSON.stringify(location);
+        position = JSON.parse(temp);
+        coordinates = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+        };
+        // position.coords.latitude, position.coords.longitude;
+    }
+
+
     const uploadData = (values, storageURL = null) =>
     {
         // console.log(values);
@@ -38,7 +75,10 @@ export default function ComplaintForm({navigation, route})
                 creation: firebase.firestore.FieldValue.serverTimestamp(),
                 comments: "",
                 status: "Processing",
-                type: ["stray animals", "water logging", "encroachment"]
+                type: ["stray animals", "water logging", "encroachment"],
+                isCovidArea: covidAreaCheckBox,
+                isCovidViolation: covidViolationCheckBox,
+                coordinates: coordinates
             }
         ).then(
             (
@@ -182,7 +222,22 @@ export default function ComplaintForm({navigation, route})
                                     /> */}
                                     {addImageButton}
                                     {imagesAttached}
-                                    <MiscButton text = "Add a Location" onPress = {() => navigation.navigate("AddLocation")} />
+
+                                    <CheckBox
+                                        style={{flex: 1, padding: 20, marginHorizontal: 45}}
+                                        onClick={() => {setCovidAreaCheckBox(!covidAreaCheckBox)} }
+                                        isChecked={covidAreaCheckBox}
+                                        rightText={"This incident is in a covid affected area"}
+                                    />
+
+                                    <CheckBox
+                                        style={{flex: 1, padding: 20, marginHorizontal: 45}}
+                                        onClick={() => {setCovidViolationCheckBox(!covidViolationCheckBox)} }
+                                        isChecked={covidViolationCheckBox}
+                                        rightText={"This incident is related to Covid rules violations"}
+                                    />
+
+                                    <MiscButton text = "Add a Location" onPress = {() => navigation.navigate("AddLocation", {coordinates})} />
                                     <FlatButton text = "Submit" onPress = {props.handleSubmit} />
                                 </View>
                             )
