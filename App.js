@@ -14,7 +14,7 @@ import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
 import Main from "./components/Main";
 
-// console.disableYellowBox = true;
+console.disableYellowBox = true;
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
 

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {View, Text, TextInput, Button, TouchableWithoutFeedback, Keyboard, Alert} from "react-native";
+import {View, Text, TextInput, Button, TouchableWithoutFeedback, Keyboard, Alert, ScrollView, SafeAreaView} from "react-native";
 import {Formik} from "formik";
 import * as yup from "yup";
 import firebase from "firebase";
@@ -167,83 +167,87 @@ export default function ComplaintForm({navigation, route})
     
 
     return(
-        <TouchableWithoutFeedback onPress = {Keyboard.dismiss}>
-            <View style = {globalStyles.container}>
-                    <Formik
-                        initialValues = {{Title: "", Complaint: "", Location: ""}}
-                        validationSchema = {complaintSchema}
-                        onSubmit = {
-                            (values, actions) =>
-                            {
-                                actions.resetForm();
-                                // console.log(images);
-                                uploadToStorage(values);
-                                setImages([]);
-                            }
-                        }
-                    >
-                        {
-                            (props) =>
-                            (
-                                <View>
-                                    <TextInput
-                                        style = {globalStyles.input}
-                                        placeholder = "Title of your complaint"
-                                        onChangeText = {props.handleChange("Title")}
-                                        value = {props.values.Title}
-                                        onBlur = {props.handleBlur("Title")}
-                                    />
-                                    <Text style = {globalStyles.errorText}>{props.touched.Title && props.errors.Title}</Text>
+        <SafeAreaView>
+            <ScrollView>
+                <TouchableWithoutFeedback onPress = {Keyboard.dismiss}>
+                    <View style = {globalStyles.container}>
+                            <Formik
+                                initialValues = {{Title: "", Complaint: "", Location: ""}}
+                                validationSchema = {complaintSchema}
+                                onSubmit = {
+                                    (values, actions) =>
+                                    {
+                                        actions.resetForm();
+                                        // console.log(images);
+                                        uploadToStorage(values);
+                                        setImages([]);
+                                    }
+                                }
+                            >
+                                {
+                                    (props) =>
+                                    (
+                                        <View>
+                                            <TextInput
+                                                style = {globalStyles.input}
+                                                placeholder = "Title of your complaint"
+                                                onChangeText = {props.handleChange("Title")}
+                                                value = {props.values.Title}
+                                                onBlur = {props.handleBlur("Title")}
+                                            />
+                                            <Text style = {globalStyles.errorText}>{props.touched.Title && props.errors.Title}</Text>
 
-                                    <TextInput
-                                        multiline
-                                        minHeight = {120}
-                                        style = {globalStyles.input}
-                                        placeholder = "Complaint in detail..."
-                                        onChangeText = {props.handleChange("Complaint")}
-                                        value = {props.values.Complaint}
-                                        onBlur = {props.handleBlur("Complaint")}
-                                    />
-                                    <Text style = {globalStyles.errorText}>{props.touched.Complaint && props.errors.Complaint}</Text>
+                                            <TextInput
+                                                multiline
+                                                minHeight = {120}
+                                                style = {globalStyles.input}
+                                                placeholder = "Complaint in detail..."
+                                                onChangeText = {props.handleChange("Complaint")}
+                                                value = {props.values.Complaint}
+                                                onBlur = {props.handleBlur("Complaint")}
+                                            />
+                                            <Text style = {globalStyles.errorText}>{props.touched.Complaint && props.errors.Complaint}</Text>
 
-                                    <TextInput
-                                        style = {globalStyles.input}
-                                        placeholder = "Location"
-                                        onChangeText = {props.handleChange("Location")}
-                                        value = {props.values.Location}
-                                        onBlur = {props.handleBlur("Location")}
-                                    />
-                                    <Text style = {globalStyles.errorText}>{props.touched.Location && props.errors.Location}</Text>
+                                            <TextInput
+                                                style = {globalStyles.input}
+                                                placeholder = "Location"
+                                                onChangeText = {props.handleChange("Location")}
+                                                value = {props.values.Location}
+                                                onBlur = {props.handleBlur("Location")}
+                                            />
+                                            <Text style = {globalStyles.errorText}>{props.touched.Location && props.errors.Location}</Text>
 
-                                    {/* <Button
-                                        title = "Add images (optional)"
-                                        color = "maroon"
-                                        onPress = {() => navigation.navigate("AddImage")}
-                                    /> */}
-                                    {addImageButton}
-                                    {imagesAttached}
+                                            {/* <Button
+                                                title = "Add images (optional)"
+                                                color = "maroon"
+                                                onPress = {() => navigation.navigate("AddImage")}
+                                            /> */}
+                                            {addImageButton}
+                                            {imagesAttached}
 
-                                    <CheckBox
-                                        style={{flex: 1, padding: 20, marginHorizontal: 45}}
-                                        onClick={() => {setCovidAreaCheckBox(!covidAreaCheckBox)} }
-                                        isChecked={covidAreaCheckBox}
-                                        rightText={"This incident is in a covid affected area"}
-                                    />
+                                            <CheckBox
+                                                style={{flex: 1, padding: 20, marginHorizontal: 45}}
+                                                onClick={() => {setCovidAreaCheckBox(!covidAreaCheckBox)} }
+                                                isChecked={covidAreaCheckBox}
+                                                rightText={"This incident is in a covid affected area"}
+                                            />
 
-                                    <CheckBox
-                                        style={{flex: 1, padding: 20, marginHorizontal: 45}}
-                                        onClick={() => {setCovidViolationCheckBox(!covidViolationCheckBox)} }
-                                        isChecked={covidViolationCheckBox}
-                                        rightText={"This incident is related to Covid rules violations"}
-                                    />
+                                            <CheckBox
+                                                style={{flex: 1, padding: 20, marginHorizontal: 45}}
+                                                onClick={() => {setCovidViolationCheckBox(!covidViolationCheckBox)} }
+                                                isChecked={covidViolationCheckBox}
+                                                rightText={"This incident is related to Covid rules violations"}
+                                            />
 
-                                    <MiscButton text = "Add a Location" onPress = {() => navigation.navigate("AddLocation", {coordinates})} />
-                                    <FlatButton text = "Submit" onPress = {props.handleSubmit} />
-                                </View>
-                            )
-                        }
-                    </Formik>
-            </View>
-        </TouchableWithoutFeedback>
+                                            <MiscButton text = "Add a Location" onPress = {() => navigation.navigate("AddLocation", {coordinates})} />
+                                            <FlatButton text = "Submit" onPress = {props.handleSubmit} />
+                                        </View>
+                                    )
+                                }
+                            </Formik>
+                    </View>
+                </TouchableWithoutFeedback>
+            </ScrollView>
+        </SafeAreaView>
     );
 }
