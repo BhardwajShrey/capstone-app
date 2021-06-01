@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from "react";
-import {View, Text, TextInput, Button, TouchableWithoutFeedback, Keyboard, Alert, ScrollView, SafeAreaView} from "react-native";
+import {StyleSheet, View, Text, TextInput, TouchableWithoutFeedback, Keyboard, Alert, ScrollView, SafeAreaView} from "react-native";
 import {Formik} from "formik";
 import * as yup from "yup";
 import firebase from "firebase";
 import * as Location from 'expo-location';
 import CheckBox from "react-native-check-box";
+import AnimatedLoader from "react-native-animated-loader";
 
 import {globalStyles} from "../styles/Global";
 import FlatButton from "../shared/FlatButton";
@@ -22,7 +23,7 @@ const complaintSchema = yup.object(
 );
 // test function arguments = (name given to test, error message to be displayed, function to validate against)
 
-export default function ComplaintForm({navigation, route})
+export default function ComplaintForm({navigation, route, props})
 {
     const [images, setImages] = useState([]);
     const [currRoute, setCurrRoute] = useState(route);
@@ -32,6 +33,8 @@ export default function ComplaintForm({navigation, route})
 
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
+
+    const [modalOpen, setModalOpen] = useState(false);
 
     useEffect(() => {
         (async () => {
@@ -66,28 +69,56 @@ export default function ComplaintForm({navigation, route})
     {
         // console.log(values);
         // console.log(storageURL);
-        firebase.firestore().collection("posts").doc(firebase.auth().currentUser.uid).collection("userPosts").add(
-            {
-                image: storageURL,
-                body: values.Complaint,
-                title: values.Title,
-                location: values.Location,
-                creation: firebase.firestore.FieldValue.serverTimestamp(),
-                comments: "",
-                status: "Processing",
-                type: ["stray animals", "water logging", "encroachment"],
-                isCovidArea: covidAreaCheckBox,
-                isCovidViolation: covidViolationCheckBox,
-                coordinates: coordinates
-            }
-        ).then(
-            (
-                function()
+
+        var url = 'https://smart-citizen-app.herokuapp.com/api/predict-class?text_query="' + values.Complaint + '"';
+
+        fetch(url)
+        .then((response) => response.json())
+        .then((json) => {
+            var labels = json.labels.filter(
+                label =>
                 {
-                    console.log("Record created...");
+                    return label.confidence > 0.25;
                 }
-            )
-        );
+            );
+
+            labels = labels.map(
+                label =>
+                {
+                    return label.category;
+                }
+            );
+            firebase.firestore().collection("posts").doc(firebase.auth().currentUser.uid).collection("userPosts").add(
+                {
+                    image: storageURL,
+                    body: values.Complaint,
+                    title: values.Title,
+                    location: values.Location,
+                    creation: firebase.firestore.FieldValue.serverTimestamp(),
+                    comments: "",
+                    status: "Processing",
+                    type: labels,
+                    isCovidArea: covidAreaCheckBox,
+                    isCovidViolation: covidViolationCheckBox,
+                    coordinates: coordinates
+                }
+            ).then(
+                (
+                    function()
+                    {
+                        setModalOpen(false);
+                        console.log("Record created...");
+                    }
+                )
+            );
+
+            // console.log(json.labels[0].category);
+            // console.log(labels);
+        })
+        .catch((error) => {
+            setModalOpen(false);
+            console.error(error);
+        });
     }
 
     const uploadToStorage = async (values) =>
@@ -168,6 +199,16 @@ export default function ComplaintForm({navigation, route})
 
     return(
         <SafeAreaView>
+                <AnimatedLoader
+                    visible = {modalOpen}
+                    overlayColor="rgba(255,255,255,0.75)"
+                    source={require("../assets/loader.json")}
+                    animationStyle={styles.lottie}
+                    speed={1}
+                    loop = {true}
+                >
+                    <Text>Sending complaint to our servers...</Text>
+                </AnimatedLoader>
             <ScrollView>
                 <TouchableWithoutFeedback onPress = {Keyboard.dismiss}>
                     <View style = {globalStyles.container}>
@@ -177,6 +218,7 @@ export default function ComplaintForm({navigation, route})
                                 onSubmit = {
                                     (values, actions) =>
                                     {
+                                        setModalOpen(true);
                                         actions.resetForm();
                                         // console.log(images);
                                         uploadToStorage(values);
@@ -251,3 +293,10 @@ export default function ComplaintForm({navigation, route})
         </SafeAreaView>
     );
 }
+
+const styles = StyleSheet.create({
+    lottie: {
+        width: 200,
+        height: 200
+    }
+  });

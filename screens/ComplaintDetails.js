@@ -9,6 +9,15 @@ export default function ReviewDetails({route})
 {
     console.log(route.params.image);
 
+    var complaintLabels = route.params.type.map(
+        type =>
+        {
+            // console.log(type);
+
+            return (<Label text = {type} />);
+        }
+    );
+
     return(
         <View style = {globalStyles.container}>
             <Card>
@@ -17,9 +26,7 @@ export default function ReviewDetails({route})
                 <Text>Location: {route.params.location}</Text>
 
                 <View style = {styles.status}>
-                    <Label text = {route.params.type[0]} />
-                    <Label text = {route.params.type[1]} />
-                    <Label text = {route.params.type[2]} />
+                    {complaintLabels}
                 </View>
 
                 <View style = {styles.status}>

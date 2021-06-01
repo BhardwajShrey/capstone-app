@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, Button, TextInput} from "react-native";
+import {View, Text, Button, TextInput, Alert} from "react-native";
 import {Formik} from "formik";
 import * as yup from "yup";
 import firebase from "firebase";
@@ -12,7 +12,15 @@ const reviewSchema = yup.object(
     {
         Name: yup.string().required(),
         Email: yup.string().email("Enter a valid email").required("Required"),
-        Password: yup.string().required().min(8, "Password too short...")
+        Password: yup.string().required().min(8, "Password too short..."),
+        PhoneNo: yup.number().required(),
+        ConfirmPassword: yup
+        .string()
+        .required("Please confirm your password")
+        .when("Password", {
+          is: Password => (Password && Password.length > 0 ? true : false),
+          then: yup.string().oneOf([yup.ref("Password")], "Password doesn't match")
+        })
     }
 );
 
@@ -21,7 +29,7 @@ export default function Register() {
     return (
         <View style = {globalStyles.container}>
             <Formik
-                initialValues = {{Name: "", Email: "", Password: ""}}
+                initialValues = {{Name: "", Email: "", Password: "", ConfirmPassword: "", PhoneNo: ""}}
                 validationSchema = {reviewSchema}
                 onSubmit = {
                     (values, actions) =>
@@ -33,7 +41,8 @@ export default function Register() {
                                 firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).set(
                                     {
                                         name: values.Name,
-                                        email: values.Email
+                                        email: values.Email,
+                                        phone: values.PhoneNo
                                     }
                                 );
                                 console.log(result);
@@ -65,6 +74,15 @@ export default function Register() {
 
                             <TextInput
                                 style = {globalStyles.input}
+                                placeholder = "Phone No."
+                                onChangeText = {props.handleChange("PhoneNo")}
+                                value = {props.values.PhoneNo}
+                                onBlur = {props.handleBlur("PhoneNo")}
+                            />
+                            <Text style = {globalStyles.errorText}>{props.touched.PhoneNo && props.errors.PhoneNo}</Text>
+
+                            <TextInput
+                                style = {globalStyles.input}
                                 placeholder = "Email"
                                 onChangeText = {props.handleChange("Email")}
                                 keyboardType = "email-address"
@@ -82,6 +100,16 @@ export default function Register() {
                                 onBlur = {props.handleBlur("Password")}
                             />
                             <Text style = {globalStyles.errorText}>{props.touched.Password && props.errors.Password}</Text>
+
+                            <TextInput
+                                style = {globalStyles.input}
+                                placeholder = "Confirm Password"
+                                onChangeText = {props.handleChange("ConfirmPassword")}
+                                value = {props.values.ConfirmPassword}
+                                secureTextEntry = {true}
+                                onBlur = {props.handleBlur("ConfirmPassword")}
+                            />
+                            <Text style = {globalStyles.errorText}>{props.touched.ConfirmPassword && props.errors.ConfirmPassword}</Text>
 
                             {/* <Button
                                 title = "Sign up"
