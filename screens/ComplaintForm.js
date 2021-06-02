@@ -211,7 +211,7 @@ export default function ComplaintForm({navigation, route})
                 </AnimatedLoader>
             <ScrollView>
                 <TouchableWithoutFeedback onPress = {Keyboard.dismiss}>
-                    <View style = {globalStyles.container}>
+                    <View style = {globalStyles.container2}>
                             <Formik
                                 initialValues = {{Title: "", Complaint: "", Location: ""}}
                                 validationSchema = {complaintSchema}
