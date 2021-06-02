@@ -27,6 +27,11 @@ export const globalStyles = StyleSheet.create(
             marginBottom: 10,
             marginTop: 6,
             textAlign: "center"
+        },
+        bigText: {
+            fontSize: 30,
+            color: "#333",
+            fontWeight: "bold"
         }
     }
 );

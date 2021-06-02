@@ -13,7 +13,6 @@ import Landing from "./components/auth/Landing";
 import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
 import Main from "./components/Main";
-import PostContextProvider from "./contexts/PostContext";
 
 console.disableYellowBox = true;
 
@@ -78,13 +77,11 @@ export default function App() {
   {
     return(
       <Provider store = {store}>
-        <PostContextProvider>
-          <NavigationContainer  independent = {true}>
-            <Stack.Navigator initialRouteName = "Main">
-              <Stack.Screen name = "Main" component = {Main} options = {{headerShown: false}} />
-            </Stack.Navigator>
-          </NavigationContainer>
-        </PostContextProvider>
+        <NavigationContainer  independent = {true}>
+          <Stack.Navigator initialRouteName = "Main">
+            <Stack.Screen name = "Main" component = {Main} options = {{headerShown: false}} />
+          </Stack.Navigator>
+        </NavigationContainer>
       </Provider>
     );
   }

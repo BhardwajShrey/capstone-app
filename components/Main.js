@@ -9,6 +9,7 @@ import {fetchUser, fetchUserPosts} from "../redux/actions/Index";
 import Dashboard from "../routes/Dashboard";
 import Account from "../routes/Account";
 import AddComplaint from "../routes/AddComplaint";
+import Covid from "../routes/Covid";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -23,7 +24,7 @@ class Main extends Component
     render()
     {
         return(
-            <Tab.Navigator initialRouteName = "Dashboard" shifting = {true}  activeColor = "#4c937f" inactiveColor = "#c9c9c9" barStyle = {{ backgroundColor: '#fffbfc' }}>
+            <Tab.Navigator initialRouteName = "Dashboard" shifting = {true}  activeColor = "#2667ff" inactiveColor = "#c9c9c9" barStyle = {{ backgroundColor: '#fffcf9' }}>
                 <Tab.Screen
                     name = "Dashboard"
                     component = {Dashboard}
@@ -46,6 +47,20 @@ class Main extends Component
                             tabBarIcon: ({color, size}) =>
                             (
                                 <MaterialIcons name = "add-box" color = {color} size = {26} />
+                            )
+                        }
+                    }
+                />
+
+                <Tab.Screen
+                    name = "Covid"
+                    component = {Covid}
+                    options = {
+                        {
+                            title: "Covid Help",
+                            tabBarIcon: ({color, size}) =>
+                            (
+                                <MaterialIcons name = "masks" color = {color} size = {26} />
                             )
                         }
                     }

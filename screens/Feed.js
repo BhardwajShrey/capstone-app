@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity} from 'react-native';
 import {connect} from "react-redux";
 
@@ -8,6 +8,7 @@ import Card from "../shared/Card";
 function Feed(props)
 {
     const {currentUser, posts} = props;
+
     // console.log(currentUser, posts);
 
     return (

@@ -23,7 +23,7 @@ const complaintSchema = yup.object(
 );
 // test function arguments = (name given to test, error message to be displayed, function to validate against)
 
-export default function ComplaintForm({navigation, route, props})
+export default function ComplaintForm({navigation, route})
 {
     const [images, setImages] = useState([]);
     const [currRoute, setCurrRoute] = useState(route);
