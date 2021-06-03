@@ -66,7 +66,7 @@ class Main extends Component
                     }
                 />
                 
-                <Tab.Screen
+                {/* <Tab.Screen
                     name = "Account"
                     component = {Account}
                     options = {
@@ -77,7 +77,7 @@ class Main extends Component
                             )
                         }
                     }
-                />
+                /> */}
 
             </Tab.Navigator>
         );

@@ -27,7 +27,7 @@ const reviewSchema = yup.object(
 export default function Register() {
     
     return (
-        <View style = {globalStyles.container}>
+        <View style = {globalStyles.container2}>
             <Formik
                 initialValues = {{Name: "", Email: "", Password: "", ConfirmPassword: "", PhoneNo: ""}}
                 validationSchema = {reviewSchema}
