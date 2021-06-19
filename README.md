@@ -1,5 +1,5 @@
 # capstone-app
-This is the (second attempt on a) mobile application which will submitted as a part of my Capstone Project for my undergraduate degree in Computer Science and Engineering. This project has been made using react-native bootstrapped by expo-client.
+This is the (second attempt on a) mobile application which was submitted as a part of my Capstone Project for my undergraduate degree in Computer Science and Engineering. This project has been made using react-native bootstrapped by expo-client.
 
 ## How to run
 1. Clone/fork/pull or whatever. I get confused with these names
